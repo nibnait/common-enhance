@@ -99,7 +99,7 @@ public class ExcelReadUtils {
 
             // 匹配列的数据类型
             String cellValue = "";
-            CellType cellType = cell.getCellTypeEnum();
+            CellType cellType = cell.getCellType();
             switch (cellType) {
                 case STRING:
                     cellValue = cell.getStringCellValue();

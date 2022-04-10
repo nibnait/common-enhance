@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public class EmailUtils {
 
-    private static final String SENDER_NAME = "mall-common-enhance";
+    private static final String SENDER_NAME = "common-enhance";
 
     private static void initEmailCfg(EmailAccount emailAccount) {
         Properties props = new Properties();

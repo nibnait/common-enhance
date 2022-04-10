@@ -50,6 +50,10 @@ public class WorkBookBO {
     /**
      * 将 workbook 写成文件
      */
+    public File writeToDefaultLocalPath(String fileName) {
+        return writeToFile(CommonConstants.DEFAULT_LOCAL_FILE_PATH, fileName);
+    }
+
     public File writeToFile(String filePath, String fileName) {
         if (StringUtils.isBlank(fileName)) {
             fileName = String.valueOf(DateUtils.currentTimeMillis());

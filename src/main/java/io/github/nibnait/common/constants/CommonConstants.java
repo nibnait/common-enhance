@@ -8,7 +8,8 @@ public class CommonConstants {
     public static final String USER_NAME = "userName";
     public static final String EXPIRED_AT = "expiredAt";
 
-    public static final String FILE_PATH = "/Users/nibnait/data/file";
+    public static final String FILE_PATH = "/data/file";
+    public static final String DEFAULT_LOCAL_FILE_PATH = "/Users/nibnait/data/file";
 
     public static final String NULL_STRING = "null";
     public static final String EMPTY_STRING = "";
