@@ -9,7 +9,7 @@ public class DateUtils {
         return new Date();
     }
 
-    public static int currentTime() {
+    public static int currentSecond() {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
