@@ -1,9 +1,7 @@
 package io.github.nibnait.common.utils;
 
-import io.github.nibnait.common.bo.ExcelBOTest;
 import io.github.nibnait.common.bo.email.EmailAccount;
 import io.github.nibnait.common.bo.email.EmailBO;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -23,11 +21,11 @@ public class EmailUtilsTest {
         emailBO.setCcAddress("xx@bilibili.com");
         emailBO.setSubject("测试 excel");
         emailBO.setContent("测试 内容");
-        emailBO.setAttachFiles(Lists.newArrayList(
-                ExcelBOTest.createExcel().writeToFile("test", "target")
-        ));
+//        emailBO.setAttachFiles(Lists.newArrayList(
+//                ExcelBOTest.createExcel().writeToFile("test", "target")
+//        ));
 
-        EmailUtils.sendEmailThrowException(emailAccount, emailBO);
+//        EmailUtils.sendEmailThrowException(emailAccount, emailBO);
     }
 
 }

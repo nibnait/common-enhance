@@ -20,10 +20,12 @@ public class ClientViewException extends RuntimeException {
 
     public ClientViewException(String message) {
         super(message);
+        this.message = message;
     }
 
     public ClientViewException(String message, Object... args) {
         super(DataUtils.format(message, args));
+        this.message = DataUtils.format(message, args);
     }
 
     public ClientViewException(Long code, String message) {
