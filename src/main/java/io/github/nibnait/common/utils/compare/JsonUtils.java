@@ -132,10 +132,21 @@ public class JsonUtils {
     }
 
     public static CompareResultDTO jsonEqual(String actual, String expect, CompareBO compareBO) {
+        CompareResultDTO compareResultDTO = new CompareResultDTO(false);
+        // fix null 或 str
+        if (StringUtils.isBlank(actual) || StringUtils.isBlank(expect)
+                || !JacksonUtils.isJson(actual) || !JacksonUtils.isJson(expect)) {
+            boolean equals = actual.equals(expect);
+            compareResultDTO.setMatch(equals);
+            if (!equals) {
+                compareResultDTO.setModifiedFields(Lists.newArrayList(new CompareResultDTO.FieldComparison(compareBO.getCurrentField(), expect, actual)));
+            }
+            return compareResultDTO;
+        }
+
         // 5. 先用 json 判断是否相等
         JsonComparisonResult comparisonResult = compare(actual, expect, compareBO);
 
-        CompareResultDTO compareResultDTO = new CompareResultDTO(false);
         if (comparisonResult == null) {
             return compareResultDTO;
         }

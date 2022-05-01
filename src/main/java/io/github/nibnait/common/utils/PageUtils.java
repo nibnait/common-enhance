@@ -1,9 +1,10 @@
 package io.github.nibnait.common.utils;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.function.Function;
@@ -19,10 +20,6 @@ public class PageUtils {
         }
 
         PageInfo<R> newPageInfo = CommonBeanUtils.copyProperties(sourcePage, PageInfo::new);
-        if (newPageInfo == null || CollectionUtils.isEmpty(list)) {
-            newPageInfo.setList(list);
-            return newPageInfo;
-        }
         newPageInfo.setList(list);
         return newPageInfo;
     }
@@ -33,7 +30,7 @@ public class PageUtils {
         }
 
         PageInfo<R> newPageInfo = CommonBeanUtils.copyProperties(sourcePage, PageInfo::new);
-        if (newPageInfo == null || sourcePage.getList() == null) {
+        if (newPageInfo == null || CollectionUtils.isEmpty(sourcePage.getList())) {
             return newPageInfo;
         }
         newPageInfo.setList(sourcePage.getList().stream().map(function).collect(Collectors.toList()));
@@ -46,7 +43,7 @@ public class PageUtils {
         PageInfo<T> pageInfo;
         do {
             pageInfo = intFunction.apply(pageNum++);
-            if (pageInfo == null) {
+            if (pageInfo == null || CollectionUtils.isEmpty(pageInfo.getList())) {
                 break;
             }
             list.addAll(pageInfo.getList());
@@ -60,12 +57,36 @@ public class PageUtils {
         PageInfo<T> pageInfo;
         do {
             pageInfo = intFunction.apply(pageNum++);
-            if (pageInfo == null) {
+            if (pageInfo == null || CollectionUtils.isEmpty(pageInfo.getList())) {
                 break;
             }
             list.addAll(pageInfo.getList());
         } while (list.size() <= totalAmount);
         return list;
+    }
+
+    // --------------------------------------------- mybatis plus ---------------------------------------------//
+    public static <T, R> Page<R> convertPageInfo(Page<T> sourcePage, List<R> list) {
+        if (sourcePage == null) {
+            return new Page<>();
+        }
+
+        Page<R> newPageInfo = CommonBeanUtils.copyProperties(sourcePage, Page::new);
+        newPageInfo.setRecords(list);
+        return newPageInfo;
+    }
+
+    public static <T, R> Page<R> convertPageInfo(Page<T> sourcePage, Function<T, R> function) {
+        if (sourcePage == null) {
+            return new Page<>();
+        }
+
+        Page<R> newPageInfo = CommonBeanUtils.copyProperties(sourcePage, Page::new);
+        if (newPageInfo == null || CollectionUtils.isEmpty(sourcePage.getRecords())) {
+            return newPageInfo;
+        }
+        newPageInfo.setRecords(sourcePage.getRecords().stream().map(function).collect(Collectors.toList()));
+        return newPageInfo;
     }
 
 }

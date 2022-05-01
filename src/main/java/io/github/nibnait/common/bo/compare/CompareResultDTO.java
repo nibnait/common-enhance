@@ -1,5 +1,7 @@
 package io.github.nibnait.common.bo.compare;
 
+import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +25,8 @@ public class CompareResultDTO {
     private String message;
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class FieldComparison {
         private String field;
 
@@ -33,5 +37,8 @@ public class CompareResultDTO {
 
     public CompareResultDTO(boolean isMatch) {
         this.isMatch = isMatch;
+        this.modifiedFields = Lists.newArrayList();
+        this.missingFields = Lists.newArrayList();
+        this.newFields = Lists.newArrayList();
     }
 }

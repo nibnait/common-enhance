@@ -100,6 +100,7 @@ public class JacksonUtils {
     }
 
     private static String focusField(String json, String path) {
+        JsonNode nullNode;
         JsonNode jsonNode = json2Node(json);
         String[] paths = path.split(SEPARATOR);
         for (String fieldName : paths) {
@@ -107,9 +108,14 @@ public class JacksonUtils {
                 continue;
             }
             if (jsonNode.isArray()) {
-                jsonNode = jsonNode.get(Integer.parseInt(fieldName));
+                nullNode = jsonNode.get(Integer.parseInt(fieldName));
             } else {
-                jsonNode = jsonNode.get(fieldName);
+                nullNode = jsonNode.get(fieldName);
+            }
+            if (nullNode != null) {
+                jsonNode = nullNode;
+            } else {
+                return node2Json(jsonNode);
             }
         }
         return node2Json(jsonNode);
@@ -210,12 +216,27 @@ public class JacksonUtils {
     }
 
     public static boolean isJson(String json) {
+        if (StringUtils.isBlank(json)) {
+            return false;
+        }
+        json = json.trim();
+        boolean result = false;
+        if (json.startsWith("{") && json.endsWith("}")) {
+            result = true;
+        } else if (json.startsWith("[") && json.endsWith("]")) {
+            result = true;
+        }
+        // 校验 json 开头/结尾格式
+        if (!result) {
+            return false;
+        }
+        // 判断 json
         try {
             MAPPER.readTree(json);
         } catch (Exception e) {
-            return false;
+            result = false;
         }
-        return true;
+        return result;
     }
 
 }

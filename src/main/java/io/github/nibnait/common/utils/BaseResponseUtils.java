@@ -15,18 +15,18 @@ import java.util.function.Supplier;
 public class BaseResponseUtils {
 
     public static <T> T getDataStrongly(BaseResponse<T> baseResponse) {
-        if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.code)) {
-            throw new ServiceException(baseResponse.code, baseResponse.message);
+        if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.getCode())) {
+            throw new ServiceException(baseResponse.getCode(), baseResponse.getMessage());
         }
-        return baseResponse.data;
+        return baseResponse.getData();
     }
 
     public static <T> T getDataStrongly(BaseResponse<T> baseResponse, String format, Object... args) {
-        if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.code)) {
-            log.error(baseResponse.message);
-            throw new ServiceException(baseResponse.code, MessageFormatter.arrayFormat(format, args).getMessage());
+        if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.getCode())) {
+            log.error(baseResponse.getMessage());
+            throw new ServiceException(baseResponse.getCode(), MessageFormatter.arrayFormat(format, args).getMessage());
         }
-        return baseResponse.data;
+        return baseResponse.getData();
     }
 
 
@@ -42,11 +42,11 @@ public class BaseResponseUtils {
     public static <T> T getDataWeakly(Supplier<BaseResponse<T>> supplier) {
         try {
             BaseResponse<T> baseResponse = supplier.get();
-            if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.code)) {
-                log.error(baseResponse.message);
+            if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.getCode())) {
+                log.error(baseResponse.getMessage());
                 return null;
             }
-            return baseResponse.data;
+            return baseResponse.getData();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -56,11 +56,11 @@ public class BaseResponseUtils {
     public static <T> Optional<T> getDataWeaklyOptional(Supplier<BaseResponse<T>> supplier) {
         try {
             BaseResponse<T> baseResponse = supplier.get();
-            if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.code)) {
-                log.error(baseResponse.message);
+            if (!ErrorCode.SUCCESS.getCode().equals(baseResponse.getCode())) {
+                log.error(baseResponse.getMessage());
                 return Optional.empty();
             }
-            return Optional.ofNullable(baseResponse.data);
+            return Optional.ofNullable(baseResponse.getData());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -68,23 +68,7 @@ public class BaseResponseUtils {
     }
 
     public static boolean isSuccess(BaseResponse response) {
-        return response != null && ErrorCode.SUCCESS.getCode().equals(response.code);
-    }
-
-    public static BaseResponse buildSuccessResMsg(String format, Object... args) {
-        return new BaseResponse(ErrorCode.SUCCESS.getCode(), DataUtils.format(format, args), null);
-    }
-
-    public static <T> BaseResponse buildSuccessRes(String msg, T data) {
-        return new BaseResponse(ErrorCode.SUCCESS.getCode(), msg, data);
-    }
-
-    public static BaseResponse buildFailedResMsg(String format, Object... args) {
-        return new BaseResponse(ErrorCode.SERVICE_ERROR.getCode(), DataUtils.format(format, args), null);
-    }
-
-    public static <T> BaseResponse buildFailedRes(String msg, T data) {
-        return new BaseResponse(ErrorCode.SERVICE_ERROR.getCode(), msg, data);
+        return response != null && ErrorCode.SUCCESS.getCode().equals(response.getCode());
     }
 
 }

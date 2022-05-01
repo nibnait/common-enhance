@@ -1,9 +1,9 @@
-package io.github.nibnait.common.utils;
+package io.github.nibnait.common.utils.compare;
 
-import io.github.nibnait.common.mock.Person;
-import io.github.nibnait.common.utils.compare.CompareUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import io.github.nibnait.common.mock.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,6 +30,18 @@ public class CompareUtilsTest {
                 "carList:*:color"
         ));
         Assert.assertTrue(result);
+    }
+
+    @Test
+    public void matchFocusFields() {
+        Person actual = getActual();
+        Person expect = getExpect();
+        expect.setAge(2);
+
+        boolean result = CompareUtils.matchFocusFields(actual, expect, Sets.newHashSet(
+                "age"
+        ));
+        Assert.assertFalse(result);
     }
 
     private Person getActual() {

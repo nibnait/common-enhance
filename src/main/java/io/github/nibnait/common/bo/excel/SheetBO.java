@@ -1,5 +1,6 @@
 package io.github.nibnait.common.bo.excel;
 
+import lombok.Getter;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Created by nibnait on 2021/01/21
  */
+@Getter
 public class SheetBO {
 
     private final HSSFSheet sheet;
@@ -24,7 +26,6 @@ public class SheetBO {
     }
 
     private void formatCellStyle(HSSFCellStyle cellStyle) {
-//        cellStyle.setWrapText(true);
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
     }

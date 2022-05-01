@@ -54,7 +54,7 @@ public class RetryUtils {
             isFail = false;
             try {
                 BaseResponse baseResponse = supplier.get();
-                if (ErrorCode.SUCCESS.getCode().equals(baseResponse.code)) {
+                if (ErrorCode.SUCCESS.getCode().equals(baseResponse.getCode())) {
                     return baseResponse;
                 }
             } catch (Exception e) {
@@ -70,7 +70,7 @@ public class RetryUtils {
             }
         }
 
-        return new BaseResponse(ErrorCode.SERVICE_ERROR, errorMsg);
+        return BaseResponse.failMsg(errorMsg);
     }
 
 }

@@ -2,10 +2,12 @@ package io.github.nibnait.common.exception;
 
 import io.github.nibnait.common.enums.AbstractErrorCode;
 import io.github.nibnait.common.utils.DataUtils;
+import lombok.Data;
 
 /**
  * Created by nibnait on 2022/04/03
  */
+@Data
 public class ServiceException extends RuntimeException {
 
     private Long code;

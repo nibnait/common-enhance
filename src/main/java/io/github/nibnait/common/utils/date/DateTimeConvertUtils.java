@@ -78,15 +78,7 @@ public class DateTimeConvertUtils {
     }
 
     public static Long string2MilliSecond(String time) {
-        if (StringUtils.isBlank(time)) {
-            return 0L;
-        }
-
-        try {
-            return new SimpleDateFormat(DATE_TIME_FORMAT).parse(time).getTime();
-        } catch (ParseException e) {
-            throw new ClientViewException("timeStr:{}, format:{} DateTimeConvertUtils.string2MilliSecond 转时间戳失败", time, DATE_TIME_FORMAT);
-        }
+        return string2MilliSecond(time, DATE_TIME_FORMAT);
     }
 
     public static Long string2MilliSecond(String time, String format) {
@@ -163,8 +155,15 @@ public class DateTimeConvertUtils {
     }
 
     /************************** String <==> LocalDateTime ********************************************/
-    public static LocalDateTime string2LocalDateTime(String dateTimeString) {
-        return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+    public static LocalDateTime string2LocalDateTime(String str, String format) {
+        if (StringUtils.isBlank(str) || StringUtils.isBlank(format)) {
+            return null;
+        }
+        return LocalDateTime.parse(str, DateTimeFormatter.ofPattern(format));
+    }
+
+    public static LocalDateTime dateTimeString2LocalDateTime(String dateString) {
+        return string2LocalDateTime(dateString, DATE_TIME_FORMAT);
     }
 
     public static LocalDateTime dateString2LocalDateTime(String dateString) {
@@ -175,15 +174,19 @@ public class DateTimeConvertUtils {
         return localDate.atStartOfDay();
     }
 
-    public static LocalDateTime dateTimeString2LocalDateTime(String dateString) {
-        return LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+    public static String localDateTime2String(LocalDateTime localDateTime) {
+        return localDateTime2String(localDateTime, DATE_TIME_FORMAT);
     }
 
-    public static String localDateTime2String(LocalDateTime localDateTime) {
+    public static String localDateTime2String(LocalDateTime localDateTime, String format) {
         if (localDateTime == null) {
             return CommonConstants.EMPTY_STRING;
         }
-        return localDateTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+        return localDateTime.format(DateTimeFormatter.ofPattern(format));
+    }
+
+    public static String localDateTime2DateString(LocalDateTime localDateTime) {
+        return localDateTime2String(localDateTime, DATE_FORMAT);
     }
 
     /************************** Date ==> LocalDate ********************************************/

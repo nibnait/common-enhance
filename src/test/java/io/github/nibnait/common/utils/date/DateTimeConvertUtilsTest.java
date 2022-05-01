@@ -2,7 +2,6 @@ package io.github.nibnait.common.utils.date;
 
 import io.github.nibnait.common.utils.DataUtils;
 import io.github.nibnait.common.utils.compare.CompareUtils;
-import io.github.nibnait.common.utils.date.DateTimeConvertUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -266,7 +265,7 @@ public class DateTimeConvertUtilsTest {
     @Test
     public void string2LocalDateTime() {
         String dateString = "2021-11-02 18:56:55";
-        LocalDateTime result = DateTimeConvertUtils.string2LocalDateTime(dateString);
+        LocalDateTime result = DateTimeConvertUtils.dateTimeString2LocalDateTime(dateString);
         LocalDateTime expect = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
         Assert.assertTrue(CompareUtils.matchObject(result, expect));
 
@@ -322,7 +321,7 @@ public class DateTimeConvertUtilsTest {
         Date date = calendar.getTime();
         LocalDateTime result = DateTimeConvertUtils.dateToLocalDateTime(date);
 
-        LocalDateTime expect = DateTimeConvertUtils.string2LocalDateTime("2021-11-02 18:56:55");
+        LocalDateTime expect = DateTimeConvertUtils.dateTimeString2LocalDateTime("2021-11-02 18:56:55");
         Assert.assertEquals(result, expect);
     }
 
@@ -369,7 +368,7 @@ public class DateTimeConvertUtilsTest {
         Date localDateExpect = DateTimeConvertUtils.string2Date("2021-11-02", DATE_FORMAT);
         Assert.assertEquals(localDateExpect, result);
 
-        LocalDateTime localDateTime = DateTimeConvertUtils.string2LocalDateTime("2021-11-02 18:56:55");
+        LocalDateTime localDateTime = DateTimeConvertUtils.dateTimeString2LocalDateTime("2021-11-02 18:56:55");
         result = DateTimeConvertUtils.toUtilDate(localDateTime);
         Assert.assertEquals(expect, result);
 

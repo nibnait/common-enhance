@@ -1,81 +1,82 @@
 package io.github.nibnait.common.response;
 
 import io.github.nibnait.common.enums.ErrorCode;
+import io.github.nibnait.common.utils.DataUtils;
+import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * Created by nibnait on 2022/04/03
  */
+@Data
 public class BaseResponse<T> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private Long code;
 
-    public Long code;
+    private String message;
 
-    public String message;
+    private T data;
 
-    public T data;
-
-    public Integer errtag = 0;
-
-    public BaseResponse() {
-        code = ErrorCode.SUCCESS.getCode();
-        message = ErrorCode.SUCCESS.getMessage();
+    // ------------------ success ---------------------------//
+    public static BaseResponse success() {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(ErrorCode.SUCCESS.getCode());
+        baseResponse.setMessage(ErrorCode.SUCCESS.getMessage());
+        return baseResponse;
     }
 
-    /**
-     * 通用返回
-     *
-     * @param code
-     * @param message
-     * @param data
-     */
-    public BaseResponse(Long code, String message, T data) {
-        super();
-        this.code = code;
-        this.message = message;
-        this.data = data;
+    public static <T> BaseResponse<T> success(T data) {
+        BaseResponse<T> baseResponse = new BaseResponse<>();
+        baseResponse.setCode(ErrorCode.SUCCESS.getCode());
+        baseResponse.setMessage(ErrorCode.SUCCESS.getMessage());
+        baseResponse.setData(data);
+        return baseResponse;
     }
 
-    /**
-     * 通用返回
-     *
-     * @param code
-     * @param errtag
-     * @param message
-     * @param data
-     */
-    public BaseResponse(Long code, Integer errtag, String message, T data) {
-        super();
-        this.code = code;
-        this.errtag = errtag;
-        this.message = message;
-        this.data = data;
+    public static BaseResponse successMsg(String format, Object... args) {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(ErrorCode.SUCCESS.getCode());
+        baseResponse.setMessage(DataUtils.format(format, args));
+        return baseResponse;
     }
 
-    /**
-     * 返回正常数据
-     *
-     * @param data
-     */
-    public BaseResponse(T data) {
-        super();
-        this.code = ErrorCode.SUCCESS.getCode();
-        this.message = ErrorCode.SUCCESS.getMessage();
-        this.data = data;
+    public static <T> BaseResponse successRes(String msg, T data) {
+        BaseResponse<T> baseResponse = new BaseResponse<>();
+        baseResponse.setCode(ErrorCode.SUCCESS.getCode());
+        baseResponse.setMessage(msg);
+        baseResponse.setData(data);
+        return baseResponse;
     }
 
-
-    /**
-     * 返回异常数据，错误号在ErrorCode中定义
-     */
-    public BaseResponse(ErrorCode e, T data) {
-        super();
-        this.code = e.getCode();
-        this.message = e.getMessage();
-        this.data = data;
+    // ------------------ fail ---------------------------//
+    public static BaseResponse fail() {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(ErrorCode.SERVICE_ERROR.getCode());
+        baseResponse.setMessage(ErrorCode.SERVICE_ERROR.getMessage());
+        return baseResponse;
     }
 
+    public static BaseResponse fail(ErrorCode errorCode) {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(errorCode.getCode());
+        baseResponse.setMessage(errorCode.getMessage());
+        return baseResponse;
+    }
+
+    public static BaseResponse failMsg(String format, Object... args) {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(ErrorCode.SERVICE_ERROR.getCode());
+        baseResponse.setMessage(DataUtils.format(format, args));
+        return baseResponse;
+    }
+
+    public static <T> BaseResponse failRes(String msg, T data) {
+        BaseResponse<T> baseResponse = new BaseResponse<>();
+        baseResponse.setCode(ErrorCode.SERVICE_ERROR.getCode());
+        baseResponse.setMessage(msg);
+        baseResponse.setData(data);
+        return baseResponse;
+    }
 }
 

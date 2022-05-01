@@ -1,8 +1,9 @@
 package io.github.nibnait.common.bo.excel;
 
+import com.google.common.collect.Lists;
 import io.github.nibnait.common.constants.CommonConstants;
-import io.github.nibnait.common.utils.EnhanceFileUtils;
 import io.github.nibnait.common.utils.date.DateUtils;
+import io.github.nibnait.common.utils.file.EnhanceFileUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,15 +33,24 @@ public class WorkBookBO {
 
     public WorkBookBO(List<List<String>> sheetTitle, String... sheetName) {
         workbook = new HSSFWorkbook();
-        if (CollectionUtils.isEmpty(sheetTitle) || sheetName == null
-                || sheetTitle.size() != sheetName.length) {
+        initSheetList(sheetTitle, Lists.newArrayList(sheetName));
+    }
+
+    public WorkBookBO(List<List<String>> sheetTitle, List<String> sheetNameList) {
+        workbook = new HSSFWorkbook();
+        initSheetList(sheetTitle, sheetNameList);
+    }
+
+    private void initSheetList(List<List<String>> sheetTitle, List<String> sheetNameList) {
+        if (CollectionUtils.isEmpty(sheetTitle) || CollectionUtils.isEmpty(sheetNameList)
+                || sheetTitle.size() != sheetNameList.size()) {
             // 直接创建一个默认的sheet
             sheetList.add(new SheetBO(workbook.createSheet("Sheet1")));
             return;
         }
 
         for (int i = 0; i < sheetTitle.size(); i++) {
-            HSSFSheet sheet = workbook.createSheet(sheetName[i]);
+            HSSFSheet sheet = workbook.createSheet(sheetNameList.get(i));
             SheetBO sheetBO = new SheetBO(sheet);
             sheetBO.appendRow(sheetTitle.get(i));
             sheetList.add(sheetBO);

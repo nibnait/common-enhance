@@ -15,6 +15,8 @@ public enum ErrorCode implements AbstractErrorCode {
      * 0001 为内部的错误码，如数据库错误
      */
     SERVICE_ERROR(80000001L, "service error"),
+    NOT_LOGIN(80000002L, "用户未登录"),
+    LOGIN_EXPIRED(80000003L, "登录已过期，请重新登录"),
 
     ;
 
