@@ -154,6 +154,13 @@ public class DateTimeConvertUtils {
         return localDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT));
     }
 
+    public static String localDate2String(LocalDate localDate, String format) {
+        if (localDate == null) {
+            return CommonConstants.EMPTY_STRING;
+        }
+        return localDate.format(DateTimeFormatter.ofPattern(format));
+    }
+
     /************************** String <==> LocalDateTime ********************************************/
     public static LocalDateTime string2LocalDateTime(String str, String format) {
         if (StringUtils.isBlank(str) || StringUtils.isBlank(format)) {
